@@ -5,7 +5,7 @@ $(document).on('ready', function (){
 		var obj = $.parseJSON( localStorage.MisArchivos );
 		var ul = $("#ultimos");
 		var dato;
-		for(var i = 0; i < obj.length && i < 10; i++)
+		for(var i = 0; i < obj.length; i++)
 		{
 			dato = obj[i];
 			var temp = new Date(dato.tiempo);
@@ -43,7 +43,7 @@ $(document).on('ready', function (){
 				var obj = $.parseJSON( localStorage.MisArchivos );
 				for(var i = 0; i < obj.length; i++)
 				{
-					if(obj[i].id == miId)
+					if(obj[i].id == miId || obj[i].nombre.length <= 0)
 					{
 						obj.splice(i, 1);
 					}
