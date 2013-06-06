@@ -1,0 +1,16 @@
+body{background:#e0e0e0;font-family:'Open Sans';font-size:16px}
+a{text-decoration:none}
+header{background:#00a67c;height:7em;position:absolute;width:100%;}
+header h1{color:#006c51;text-align:center;padding-top:.5em}
+.principal{padding-top:12em;color:#006c51;font-weight:bold;}
+.principal #linkcomparti{text-align:center;padding-bottom:1em}
+.principal #formDoc{text-align:center;}
+.principal #formDoc input{font-size:3em}
+.principal p{text-align:center;margin-top:3em;}
+.principal p:last-child{margin-bottom:3em;}
+.principal p:last-child span{color:#f00;font-size:3em}
+input{background-color:#fff;border:1px solid #ccc;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);text-align:center;-webkit-transition:border linear .2s, box-shadow linear .2s;-moz-transition:border linear .2s, box-shadow linear .2s;-o-transition:border linear .2s, box-shadow linear .2s;-ms-transition:border linear .2s, box-shadow linear .2s;transition:border linear .2s,box-shadow linear .2s}
+footer{background:#00a67c;height:5em;}
+footer p{color:#006c51;font-size:1em;padding-top:1.1em;text-align:center}
+ul,li{list-style-type:none;}
+ul a,li a{color:#808080}

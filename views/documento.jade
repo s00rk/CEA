@@ -1,0 +1,20 @@
+extend layout
+
+block masJs
+	each archivo in archivosJs
+		script(src="/codemirror/mode/#{archivo}/#{archivo}.js")
+
+block contenido
+	.principal
+		h2(style="text-align:center; margin-top: -1em;")="Archivo: "
+			span(id="archivo") #{archivo}
+			br
+			select(id="tipoCodigo")
+				each archiv in archivosJs
+					option(value="#{archiv}") #{archiv}
+		br
+		form(id="linkcomparti")
+			span(id="milink", style="text-align: center;")
+		textarea(id="micodigo") #{codigo}
+		br
+		br
