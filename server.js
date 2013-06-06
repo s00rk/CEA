@@ -125,18 +125,15 @@ var connection = function (socket){
 		var room = socket.room;
 
 		db.get("SELECT Archivo FROM codigos WHERE ID = $id", { $id: room }, function (err, row){
-			console.log(row);
 			if(typeof row == "undefined")
 			{
 				return;
 			}
-			console.log(row);
 			fs.writeFile('./data/' + row.Archivo, data.codigo, function (err){
 				if(!err)
 				{
 					console.log(address.address + ' hizo un cambio en: ' + room);					
 				}
-				console.log(err);
 			});
 		});
 		io.sockets.in( room ).emit('escribir', data);
