@@ -15,8 +15,8 @@ fs.exists('editorOnline.sqlite', function (exists){
 	if(!exists)
 	{
 		db = new sqlite3.Database('editorOnline.sqlite');
-		db.run("CREATE TABLE IF NOT EXISTS codigos (ID INT PRIMARY KEY, Nombre TEXT, Archivo TEXT)", {}, function (err, row){
-			db.run("INSERT INTO codigos VALUES (1, '', '')");	
+		db.run("CREATE TABLE IF NOT EXISTS codigos (ID INT PRIMARY KEY, Nombre TEXT, Archivo TEXT, Codigo TEXT)", {}, function (err, row){
+			db.run("INSERT INTO codigos VALUES (1, '', '', '')");	
 		});		
 	}else{
 		db = new sqlite3.Database('editorOnline.sqlite');
@@ -79,7 +79,7 @@ app.get('/documento/:id', function (req, res){
 		return;
 	}
 	
-	db.get("SELECT Nombre, Archivo FROM codigos WHERE ID = $id", { $id: id }, function (err, row){
+	db.get("SELECT Nombre, Archivo, Codigo FROM codigos WHERE ID = $id", { $id: id }, function (err, row){
 		if(typeof row == "undefined")
 		{			
 			res.render('404');
@@ -88,27 +88,20 @@ app.get('/documento/:id', function (req, res){
 		var nombreFile = row.Nombre;
 		var archivo = row.Archivo;
 		var file = "./data/" + archivo;
-		var codigo = "";
+		var codigo = row.Codigo;
 
-		fs.exists(file, function (exists) {
-			if(exists)
+		var files = fs.readdirSync('./public/codemirror/mode');
+		var arch = Array();
+		var t = 0;
+		for(var i = 0; i < files.length; i++)
+		{
+			if(files[i] != "meta.js" && files[i] != "rpm")
 			{
-				codigo = fs.readFileSync(file, 'utf8');			
+				arch[t++] = files[i];					
 			}
-			var files = fs.readdirSync('./public/codemirror/mode');
-			var arch = Array();
-			var t = 0;
-			for(var i = 0; i < files.length; i++)
-			{
-				if(files[i] != "meta.js" && files[i] != "rpm")
-				{
-					arch[t++] = files[i];					
-				}
-			};
-			res.render('documento', { 'archivo' : nombreFile, 'codigo' : codigo, 'archivosJs': arch });
-		});
-
-
+		};
+		res.render('documento', { 'archivo' : nombreFile, 'codigo' : codigo, 'archivosJs': arch });
+		
 	});
 
 });
@@ -124,19 +117,11 @@ var connection = function (socket){
 	socket.on('escribir', function (data){		
 		var room = socket.room;
 
-		db.get("SELECT Archivo FROM codigos WHERE ID = $id", { $id: room }, function (err, row){
-			if(typeof row == "undefined")
-			{
-				return;
-			}
-			fs.writeFile('./data/' + row.Archivo, data.codigo, function (err){
-				if(!err)
-				{
-					console.log(address.address + ' hizo un cambio en: ' + room);					
-				}
-			});
-		});
-		io.sockets.in( room ).emit('escribir', data);
+		socket.broadcast.to( room ).emit('escribir', data);
+
+		db.get("UPDATE codigos SET Codigo = $cod WHERE ID = $id", { $cod: data.codigo, $id: room }, function (err, row){			
+			console.log(address.address + ' hizo un cambio en: ' + room);
+		});	
 		
 	});
 
