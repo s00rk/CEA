@@ -5,8 +5,7 @@ var express = require('express'),
 	server 	= require('http').createServer(app),
 	io 		= require('socket.io').listen(server, { log: false });
 	
-var cons 	= require('consolidate'),
-	fs 		= require('fs'),
+var fs 		= require('fs'),
 	sqlite3 = require('sqlite3');
 
 var db;
@@ -33,7 +32,7 @@ function compile(str, path) {
 		.use(nib());
 }
 
-server.listen(3000);
+server.listen(30948);
 
 app.set('view engine', 'jade');
 
